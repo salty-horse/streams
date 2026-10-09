@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Streams</title>
+<style>
+  body {
+    text-align: center;
+  }
+  #new {
+    font-size: 5em;
+  }
+  #previous {
+    display: none;
+  }
+  #previous_list {
+    font-size: 2em;
+  }
+  button {
+    font-size: 200%;
+    height: 2em;
+    -webkit-border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
+    border-radius: 0.5em;
+    color: #000000;
+    background: #e4ebf0;
+    border: solid #1f628d 0.2em;
+    text-decoration: none;
+  }
+</style>
+<script>
+let tiles = ['★'];
+for (let i = 1; i <= 30; i++) {
+  tiles.push(i);
+  if (11 <= i && i <= 19) {
+    tiles.push(i);
+  }
+}
+
+let drawn = [];
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('draw').addEventListener('click', () => {
+    let i = Math.floor(Math.random() * tiles.length);
+    let elem = tiles[i];
+    tiles.splice(i, 1);
+    drawn.push(elem);
+
+    document.getElementById('new').textContent = elem;
+
+    let format = [];
+    for (let i = 0; i < drawn.length - 1; i++) {
+      if (i > 0 && i % 5 == 0) {
+        format.push('<br>');
+      }
+      format.push(drawn[i]);
+      if (i != drawn.length-2) {
+        format.push(', ');
+      }
+    }
+    if (format.length > 0) {
+      console.log(format);
+      document.getElementById('previous').style.display = 'block';
+      document.getElementById('previous_list').innerHTML = format.join('');
+    }
+
+    if (drawn.length == 20) {
+      document.getElementById('draw').style.display = 'none';
+      document.getElementById('remaining').textContent = 'GAME OVER';
+      document.getElementById('remaining').style['font-size'] = '3em';
+    } else {
+      document.getElementById('remaining').textContent = `${20 - drawn.length} remaining`;
+    }
+  });
+});
+</script>
+</head>
+<body>
+<h1>Streams</h1>
+<button id='draw'>Draw</button><br><br>
+<span id='remaining'>20 remaining</span>
+<br><br>
+<div id='previous'>
+  Previously drawn:<br><br>
+  <span id='previous_list'></span>
+</div>
+<br>
+<div id='new'></div>
+<br>
+</body>
+</html>
